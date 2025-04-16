@@ -7,7 +7,9 @@ const userRoutes = require('./routes/userRoutes')
 // rest object
 
 const app =  express()
+// template engine
 
+app.set('view engine', 'ejs')
 
 // middleware
 app.use(express.json())
@@ -16,6 +18,19 @@ app.use(morgan('dev'))
 
 app.use('/api/v1/user',userRoutes)
 
+// root
+
+app.get('/', (req,res)=>{
+
+    let sitename = "Adidas"
+    let linkTitle =  "About Us"
+    res.render("index" , {sitename : sitename , linkTitle : linkTitle})
+})
+
+app.get('/blog/:slug', (req,res)=>{
+    let data= req.params.slug
+    res.render('blogpost', {data: data})
+})
 
 const PORT = 8000
 
