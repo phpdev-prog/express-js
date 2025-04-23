@@ -24,6 +24,7 @@ const newUser = async(req,res) => {
          })
          res.status(201).json({
             success: true,
+
             user
          })
        } catch (error) {
@@ -31,4 +32,35 @@ const newUser = async(req,res) => {
        }
 }
 
-module.exports = {getUser, createUser , newUser}
+const getAllUsers = async(req,res) => {
+   try{
+     const users = await userModel.find({})
+     res.status(200).json({
+      success: true,
+      totalUsers: users.length,
+      users
+     })
+   }
+   catch(error){
+      console.log(error)
+   }
+}
+
+const getSingleUser =  async(req,res) => {
+     const user = await userModel.findById(req.params.id)
+     if(user){
+        res.status(200).json({
+            success: true,
+            user
+        })
+     }
+     else{
+        res.status(404).json({
+            success: false,
+            message: "User not found"
+    })
+   }
+
+}
+
+module.exports = {getUser, createUser , newUser , getAllUsers , getSingleUser}
